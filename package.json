@@ -6,6 +6,8 @@
   "scripts": {
     "clean": "rm -rf dist",
     "compile": "webpack",
+    "compile:dev": "webpack --config webpack.config-dev.js",
+    "compile:watch": "webpack --config webpack.config-dev.js --watch",
     "start": "npm run dev",
     "dev": "node --harmony bin/webpack-dev-server",
     "dev:debug": "npm run dev -- --debug",
@@ -15,15 +17,18 @@
     "test:server": "mocha --harmony bin/test-server",
     "deploy": "npm run test:unit && npm run compile && npm run test:server",
     "server:start": "node --harmony bin/server",
-    "server:dev": "nodemon --harmony --watch server bin/server"
+    "server:dev": "nodemon --harmony --watch server --watch dist bin/server",
+    "server:watch": "npm run compile:dev && concurrent --kill-others \"npm run compile:watch\" \"npm run server:dev\"",
+    "watch": "npm run compile:dev && concurrent --kill-others \"npm run compile:watch\" \"npm run dev\" \"npm run server:dev\"",
+    "watch:debug": "npm run compile:dev && concurrent --kill-others \"npm run compile:watch\" \"npm run dev:debug\" \"npm run server:dev\"",
+    "watch:debugnw": "npm run compile:dev && concurrent --kill-others \"npm run compile:watch\" \"npm run dev:debugnw\" \"npm run server:dev\""
   },
   "author": "David Zukowski <david@zuko.me> (http://zuko.me)",
   "license": "MIT",
   "dependencies": {
     "babel": "^5.8.23",
+    "babel-plugin-typecheck": "^1.2.0",
     "history": "^1.9.0",
-    "immutable": "^3.7.4",
-    "invariant": "^2.1.0",
     "koa": "^1.0.0",
     "koa-static": "^1.4.9",
     "react": "^0.14.0-rc1",
@@ -31,6 +36,9 @@
     "react-redux": "^2.0.0",
     "react-router": "1.0.0-rc1",
     "redux": "^3.0.0",
+    "redux-logger": "^1.0.7",
+    "redux-thunk": "^0.1.0",
+    "serialize-javascript": "^1.1.2",
     "thunkify": "^2.1.2",
     "yargs": "^3.18.0"
   },
@@ -41,9 +49,10 @@
     "babel-loader": "^5.0.0",
     "babel-plugin-react-transform": "^1.0.2",
     "babel-runtime": "^5.8.20",
+    "concurrently": "^0.1.1",
     "css-loader": "^0.17.0",
     "delicate-error-reporter": "0.0.9",
-    "eslint": "^1.0.0",
+    "eslint": "^1.4.3",
     "eslint-config-airbnb": "0.0.8",
     "eslint-loader": "^1.0.0",
     "eslint-plugin-react": "^3.3.1",
@@ -70,6 +79,6 @@
     "style-loader": "^0.12.1",
     "supertest": "^1.0.1",
     "webpack": "^1.11.0",
-    "webpack-dev-server": "^1.10.1"
+    "webpack-dev-server": "^1.11.0"
   }
 }

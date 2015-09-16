@@ -36,7 +36,6 @@ Features
   * redux-devtools (enabled with `--debug` flag)
     * or try `npm run dev:debugnw` to display it in a separate window.
 * [Koa](https://github.com/koajs/koa)
-* [Immutable.js](https://github.com/facebook/immutable-js)
 * [Karma](https://github.com/karma-runner/karma)
   * Mocha w/ Chai and Sinon-Chai
   * PhantomJS
@@ -102,8 +101,7 @@ You can redefine which packages to treat as vendor dependencies by editing `vend
 
 ```js
 [
-  'history',
-  'immutable',
+  'history',  
   'react',
   'react-redux',
   'react-router',

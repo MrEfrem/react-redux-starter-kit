@@ -22,13 +22,6 @@ app.use(serve(paths.dist('client'), {
 // ------------------------------------
 // View Rendering
 // ------------------------------------
-function getInitialState () {
-  const counter = this.request.query.counter ?
-    parseInt(this.request.query.counter) : 0;
-
-  return new Promise(res => res({ counter }));
-}
-
-app.use(require('./middleware/render-route')(getInitialState));
+app.use(require('./middleware/render-route'));
 
 export default app;

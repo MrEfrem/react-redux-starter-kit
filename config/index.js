@@ -46,7 +46,6 @@ config.set('dir_dist', 'dist');
 
 config.set('vendor_dependencies', [
   'history',
-  'immutable',
   'react',
   'react-redux',
   'react-router',

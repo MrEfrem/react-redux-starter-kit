@@ -1,7 +1,7 @@
 import webpack          from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import config           from '../config';
-import webpackConfig    from './webpack/client';
+import webpackConfig    from './webpack/client-dev';
 
 const paths = config.get('utils_paths');
 
@@ -14,6 +14,7 @@ const server = new WebpackDevServer(webpack(webpackConfig), {
   stats  : {
     colors : true
   },
+  headers: {"Access-Control-Allow-Origin": "*"},
   historyApiFallback : true
 });
 

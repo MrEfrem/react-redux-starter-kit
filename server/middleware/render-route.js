@@ -2,10 +2,11 @@ import fs        from 'fs';
 import config    from '../../config';
 import React     from 'react';
 import ReactDOM  from 'react-dom/server';
+import serialize from 'serialize-javascript';
+import { RoutingContext } from 'react-router';
 
 const paths = config.get('utils_paths');
-
-const { Root, route, configureStore } = require(paths.dist('server'));
+const { Root, route, configureStore, fetchComponentData } = require(paths.dist('server'));
 
 // ------------------------------------
 // Rendering Setup
@@ -27,30 +28,24 @@ const template = fs.readFileSync(paths.dist('client/index.html'), 'utf-8')
 function renderIntoTemplate (template, content, initialState) {
   return template
     .replace('${content}', content)
-    .replace('${initialState}', JSON.stringify(initialState));
+    .replace('${initialState}', serialize(initialState));
 }
 
 // ------------------------------------
 // Rendering Middleware
 // ------------------------------------
-export default function makeRenderRouteMiddleware (middleware) {
-  return function *renderRouteMiddleware (next) {
-    let initialState;
+export default function *renderRouteMiddleware (next) {
+  const props  = yield route(this.request.url);
 
-    if (typeof middleware === 'function') {
-      initialState = yield middleware.call(this);
-    }
+  const store = configureStore();
 
-    try {
-      const props  = yield route(this.request.url);
-      const markup = ReactDOM.renderToString(
-        <Root routingContext={props} store={configureStore(initialState)} />
-      );
+  yield fetchComponentData(store.dispatch, props.components, props.params);
 
-      this.body = renderIntoTemplate(template, markup, initialState);
-    } catch (e) {
-      console.log(e);
-      yield next;
-    }
-  };
+  const markup = ReactDOM.renderToString(
+    <Root store={store}>
+      <RoutingContext {...props} />
+    </Root>
+  );
+
+  this.body = renderIntoTemplate(template, markup, store.getState());
 }

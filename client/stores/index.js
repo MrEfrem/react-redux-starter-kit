@@ -1,13 +1,29 @@
-import { compose, createStore } from 'redux';
+import { compose, createStore, applyMiddleware } from 'redux';
 import { devTools } from 'redux-devtools';
 import rootReducer from 'reducers';
+import thunkMiddleware from 'redux-thunk';
+import loggerMiddleware from 'redux-logger';
 
 let createStoreWithMiddleware;
 
 if (__DEBUG__) {
-  createStoreWithMiddleware = compose(devTools())(createStore);
-} else {
-  createStoreWithMiddleware = createStore;
+  createStoreWithMiddleware = compose(
+    applyMiddleware(
+      thunkMiddleware,
+      loggerMiddleware
+    ),
+    devTools())(createStore);
+}
+if (__DEV__) {
+  createStoreWithMiddleware = applyMiddleware(
+    thunkMiddleware,
+    loggerMiddleware
+  )(createStore);
+}
+if (__PROD__) {
+  createStoreWithMiddleware = applyMiddleware(
+    thunkMiddleware
+  )(createStore);
 }
 
 export default function configureStore (initialState) {

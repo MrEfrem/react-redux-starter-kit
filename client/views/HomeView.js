@@ -1,5 +1,7 @@
 import React       from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import * as CounterActions from 'reducers/counter';
 
 // We define mapDispatchToProps where we'd normally use the @connect
 // decorator so the data requirements are clear upfront, but then
@@ -19,6 +21,10 @@ export class HomeView extends React.Component {
     super();
   }
 
+  static needs = [
+    CounterActions.setCounter
+  ]
+
   // normally you'd import an action creator, but I don't want to create
   // a file that you're just going to delete anyways!
   _increment () {
@@ -34,6 +40,8 @@ export class HomeView extends React.Component {
                 onClick={::this._increment}>
           Increment
         </button>
+        <br/><br/>
+        <Link to="/test">Test page</Link>
       </div>
     );
   }
