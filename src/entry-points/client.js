@@ -1,7 +1,7 @@
 import React     from 'react';
 import ReactDOM  from 'react-dom';
 import Root      from 'containers/Root';
-import configureStore from 'stores';
+import configureStore from '../stores';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import createRoutes from 'routes';
 import { Router }   from 'react-router';

@@ -33,8 +33,8 @@ Features
 * [react-router](https://github.com/rackt/react-router) (`1.0.0-rc1`)
 * [Redux](https://github.com/gaearon/redux) (`^3.0.0`)
   * react-redux
-  * redux-devtools (enabled with `--debug` flag)
-    * or try `npm run dev:debugnw` to display it in a separate window.
+  * redux-devtools
+    * use `npm run dev:nw` to display in a separate window.
 * [Koa](https://github.com/koajs/koa)
 * [Karma](https://github.com/karma-runner/karma)
   * Mocha w/ Chai and Sinon-Chai
@@ -59,11 +59,11 @@ Usage
 #### `npm run dev` also `npm start`
 Runs the webpack build system just like in `compile` but enables HMR. The webpack dev server can be found at `localhost:3000`.
 
-#### `npm run dev:debug`
-Same as `npm run dev` but enables `--debug` flag automatically (this will enable redux-devtools).
+#### `npm run dev:nw`
+Same as `npm run dev` but opens the debug tools in a new window.
 
-#### `npm run dev:debugnw`
-Same as `npm run dev:debug` but opens the debug tools in a new window.
+#### `npm run dev:no-debug`
+Same as `npm run dev` but disables devtools.
 
 #### `npm run compile`
 Runs the Webpack build system with your current NODE_ENV and compiles the application to disk (`~/dist`). Production builds will fail on eslint errors (but not on warnings).
@@ -119,20 +119,20 @@ import MyComponent from '../../components/my-component'; // without alias
 import MyComponent from 'components/my-component'; // with alias
 
   // Available aliases:
-  actions     => '~/client/actions'
-  components  => '~/client/components'
-  constants   => '~/client/constants'
-  containers  => '~/client/containers'
-  dispatchers => '~/client/dispatchers'
-  layouts     => '~/client/layouts'
-  models      => '~/client/models'
-  reducers    => '~/client/reducers'
-  routes      => '~/client/routes'
-  services    => '~/client/services'
-  stores      => '~/client/stores'
-  styles      => '~/client/styles'
-  utils       => '~/client/utils'
-  views       => '~/client/views'
+  actions     => '~/src/actions'
+  components  => '~/src/components'
+  constants   => '~/src/constants'
+  containers  => '~/src/containers'
+  dispatchers => '~/src/dispatchers'
+  layouts     => '~/src/layouts'
+  models      => '~/src/models'
+  reducers    => '~/src/reducers'
+  routes      => '~/src/routes'
+  services    => '~/src/services'
+  stores      => '~/src/stores'
+  styles      => '~/src/styles'
+  utils       => '~/src/utils'
+  views       => '~/src/views'
 ```
 
 ### Globals
@@ -158,14 +158,14 @@ Styles
 All `.scss` imports will be run through the sass-loader, extracted during production builds, and ignored during server builds. If you're requiring styles from a base styles directory (useful for generic, app-wide styles) in your JS, you can make use of the `styles` alias, e.g.:
 
 ```js
-// ~/client/components/some/nested/component/index.jsx
+// ~/src/components/some/nested/component/index.jsx
 import `styles/core.scss`;
 ```
 
 Furthermore, this `styles` directory is aliased for sass imports, which further eliminates manual directory traversing. An example nested `.scss` file:
 
 ```scss
-// current path: ~/client/styles/some/nested/style.scss
+// current path: ~/src/styles/some/nested/style.scss
 // what used to be this:
 @import '../../base';
 
@@ -176,7 +176,7 @@ Furthermore, this `styles` directory is aliased for sass imports, which further 
 Testing
 -------
 
-To add a unit test, simply create `.spec.js` file anywhere in `~/client`. The entry point for Karma uses webpack's custom require to load all these files, and both Mocha and Chai will be available to you within your test without the need to import them.
+To add a unit test, simply create `.spec.js` file anywhere in `~/src`. The entry point for Karma uses webpack's custom require to load all these files, and both Mocha and Chai will be available to you within your test without the need to import them.
 
 Utilities
 ---------
@@ -238,11 +238,4 @@ Deployment
 Troubleshooting
 ---------------
 
-### `--debug` isn't working
-If you're using one of the pre-configured npm scripts, make sure you follow npm's syntax:
-
-`npm run [command] [-- <args>]`
-
-As an example, `npm run compile` would look like this:
-
-`npm run compile -- --debug`
+Nothing yet. Having an issue? Report it and I'll get to it as soon as possible!

@@ -1,6 +1,10 @@
 import React        from 'react';
 import { Provider } from 'react-redux';
-import { createDevToolsWindow } from 'utils';
+import { Router }   from 'react-router';
+import invariant    from 'invariant';
+import routes       from '../routes';
+import { RoutingContext } from 'react-router';
+import { createDevToolsWindow } from '../utils';
 import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
 
 export default class Root extends React.Component {
@@ -10,7 +14,8 @@ export default class Root extends React.Component {
   // is provided by the server and provides a full router state.
   static propTypes = {
     store          : React.PropTypes.object.isRequired,
-    children       : React.PropTypes.element.isRequired
+    routerHistory  : React.PropTypes.object,
+    routingContext : React.PropTypes.object
   }
 
   constructor () {
@@ -23,9 +28,26 @@ export default class Root extends React.Component {
       return null;
     } else {
       return (
-        <DebugPanel top left bottom key='debugPanel'>
+        <DebugPanel top right bottom key='debugPanel'>
           <DevTools store={this.props.store} monitor={LogMonitor} />
         </DebugPanel>
+      );
+    }
+  }
+
+  renderRouter () {
+    invariant(
+      this.props.routingContext || this.props.routerHistory,
+      '<Root /> needs either a routingContext or routerHistory to render.'
+    );
+
+    if (this.props.routingContext) {
+      return <RoutingContext {...this.props.routingContext} />;
+    } else {
+      return (
+        <Router history={this.props.routerHistory}>
+          {routes}
+        </Router>
       );
     }
   }
@@ -40,8 +62,8 @@ export default class Root extends React.Component {
     return (
       <div>
         {debugTools}
-        <Provider store={this.props.store} key="provider">
-          {this.props.children}
+        <Provider store={this.props.store}>
+          {this.renderRouter()}
         </Provider>
       </div>
     );

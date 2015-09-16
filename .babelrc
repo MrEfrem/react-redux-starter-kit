@@ -11,7 +11,7 @@
       "locals" : ["module"]
     }, {
       "target" : "react-transform-catch-errors",
-      "imports" : ["react", "delicate-error-reporter"]
+      "imports" : ["react", "redbox-react"]
     }]
   }
 }
