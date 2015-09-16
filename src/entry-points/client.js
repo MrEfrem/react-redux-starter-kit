@@ -1,11 +1,11 @@
 import React     from 'react';
 import ReactDOM  from 'react-dom';
-import Root      from 'containers/Root';
+import Root      from '../containers/Root';
 import configureStore from '../stores';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
-import createRoutes from 'routes';
+import createRoutes from '../routes';
 import { Router }   from 'react-router';
-import { fetchComponentData } from 'utils';
+import { fetchComponentData } from '../utils';
 
 const target = document.getElementById('root');
 const store  = configureStore(window.__INITIAL_STATE__);

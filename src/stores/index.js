@@ -1,24 +1,25 @@
 import { compose, createStore, applyMiddleware } from 'redux';
 import { devTools } from 'redux-devtools';
-import rootReducer from 'reducers';
+import rootReducer from '../reducers';
 import thunkMiddleware from 'redux-thunk';
 import loggerMiddleware from 'redux-logger';
 
 let createStoreWithMiddleware;
-
-if (__DEBUG__) {
-  createStoreWithMiddleware = compose(
-    applyMiddleware(
+if (__DEV__) {
+  if (__DEBUG__) {
+    createStoreWithMiddleware = compose(
+      applyMiddleware(
+        thunkMiddleware,
+        loggerMiddleware
+      ),
+      devTools()
+    )(createStore);
+  } else {
+    createStoreWithMiddleware = applyMiddleware(
       thunkMiddleware,
       loggerMiddleware
-    ),
-    devTools())(createStore);
-}
-if (__DEV__) {
-  createStoreWithMiddleware = applyMiddleware(
-    thunkMiddleware,
-    loggerMiddleware
-  )(createStore);
+    )(createStore);
+  }
 }
 if (__PROD__) {
   createStoreWithMiddleware = applyMiddleware(

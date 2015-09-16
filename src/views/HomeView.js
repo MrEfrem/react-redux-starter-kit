@@ -1,7 +1,7 @@
 import React       from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import * as CounterActions from 'reducers/counter';
+import * as CounterActions from '../reducers/counter';
 
 // We define mapStateToProps where we'd normally use the @connect
 // decorator so the data requirements are clear upfront, but then

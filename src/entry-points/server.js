@@ -1,9 +1,12 @@
-import routes          from 'routes';
+import createRoutes    from 'routes';
 import { match }       from 'react-router';
 import createLocation  from 'history/lib/createLocation';
 
-export Root           from 'containers/Root';
+export Root           from '../containers/Root';
 export configureStore from '../stores';
+export { fetchComponentData } from '../utils';
+
+const routes = createRoutes();
 
 export function route (url) {
   const location = createLocation(url);

@@ -1,8 +1,8 @@
 import React       from 'react';
 import { connect } from 'react-redux';
-import * as CounterActions from 'reducers/counter';
+import * as CounterActions from '../reducers/counter';
 
-const mapDispatchToProps = (state) => ({
+const mapStateToProps = (state) => ({
   counter : state.counter
 });
 export default class TestView extends React.Component {
@@ -28,4 +28,4 @@ export default class TestView extends React.Component {
   }
 }
 
-export default connect(mapDispatchToProps)(TestView);
+export default connect(mapStateToProps)(TestView);
