@@ -39,7 +39,7 @@ export default function(publicPath, mode) {
     output: {
       filename: mainJSFileName,
       path: paths.dist('client'),
-      publicPath: '/'
+      publicPath: publicPath
     },
     plugins: [
       new webpack.DefinePlugin(Object.assign(config.get('globals'), {
