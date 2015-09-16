@@ -16,12 +16,10 @@ export default function(publicPath, mode) {
       mainJSFileName = 'app.js';
       vendorJSFileName = 'vendor.js';
       mainCSSFileName = 'app.css';
-      devtool = 'inline-source-map';
       break;
     case 'prod':
       vendorJSFileName = mainJSFileName = '[name].[hash].js';
       mainCSSFileName = '[name].[contenthash].css';
-      devtool = 'source-map';
       break;
     default:
       throw new Error(`Invalid mode ${mode}`);
@@ -30,7 +28,7 @@ export default function(publicPath, mode) {
   const webpackConfig = {
     name: 'client',
     target: 'web',
-    devtool: devtool,
+    devtool: 'source-map',
     entry: {
       app: [
         paths.src('entry-points/client')

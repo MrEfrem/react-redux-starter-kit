@@ -10,8 +10,6 @@ import { fetchComponentData } from '../utils';
 const target = document.getElementById('root');
 const store  = configureStore(window.__INITIAL_STATE__);
 
-// Note how we fill the next route on route leave.
-// We don't waste time re-fetching when we're hydrated from server.
 function onRouteEnter(nextState, transition, done) {
   fetchComponentData(store.dispatch, nextState.routes.map(b => b.component), nextState.params)
     .catch(err => {

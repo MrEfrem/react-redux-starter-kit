@@ -37,9 +37,13 @@ function renderIntoTemplate (template, content, initialState) {
 export default function *renderRouteMiddleware (next) {
   const props  = yield route(this.request.url);
 
-  const store = configureStore();
+  let store = configureStore();
 
   yield fetchComponentData(store.dispatch, props.components, props.params);
+
+  if (config.get('globals').__DEBUG__) {
+    store = configureStore(store.getState());
+  }
 
   const markup = ReactDOM.renderToString(
     <Root store={store}>
