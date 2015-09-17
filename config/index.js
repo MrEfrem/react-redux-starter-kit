@@ -23,7 +23,9 @@ config.set('vendor_dependencies', [
   'react',
   'react-redux',
   'react-router',
-  'redux'
+  'redux',
+  'redux-devtools',
+  'redux-devtools/lib/react'
 ]);
 
 config.set('webpack_lint_in_dev', true);

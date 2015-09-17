@@ -41,7 +41,8 @@ export default function(publicPath, mode) {
     },
     plugins: [
       new webpack.DefinePlugin(Object.assign(config.get('globals'), {
-        __CLIENT__: true
+        __CLIENT__: true,
+        __SERVER__: false
       })),
       new webpack.optimize.OccurrenceOrderPlugin(),
       new webpack.optimize.DedupePlugin(),

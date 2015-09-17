@@ -19,7 +19,8 @@ const webpackConfig = {
   },
   plugins : [
     new webpack.DefinePlugin(Object.assign(config.get('globals'), {
-      __SERVER__ : true
+      __SERVER__ : true,
+      __CLIENT__ : false
     })),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin()

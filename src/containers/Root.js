@@ -1,6 +1,5 @@
 import React        from 'react';
 import { Provider } from 'react-redux';
-import { createDevToolsWindow } from '../utils';
 import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
 
 export default class Root extends React.Component {
@@ -19,7 +18,25 @@ export default class Root extends React.Component {
 
   renderDevTools () {
     if (__DEBUG_NW__) {
-      createDevToolsWindow(this.props.store);
+      if (__CLIENT__) {
+        const win = window.open(
+          null,
+          'redux-devtools', // give it a name so it reuses the same window
+          'menubar=no,location=no,resizable=yes,scrollbars=no,status=no'
+        );
+
+        // reload in case it's reusing the same window with the old content
+        win.location.reload();
+
+        // wait a little bit for it to reload, then render
+        setTimeout(() => {
+          React.render(
+            <DebugPanel top right bottom left>
+              <DevTools store={this.props.store} monitor={LogMonitor}/>
+            </DebugPanel>
+            , win.document.body);
+        }, 10);
+      }
       return null;
     } else {
       return (
