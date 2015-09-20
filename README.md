@@ -132,7 +132,7 @@ import MyComponent from 'components/my-component'; // with alias
   stores      => '~/src/stores'
   styles      => '~/src/styles'
   utils       => '~/src/utils'
-  views       => '~/src/views'
+  components  => '~/src/components'
 ```
 
 ### Globals

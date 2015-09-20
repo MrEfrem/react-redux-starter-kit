@@ -1,8 +1,8 @@
 import { Route }   from 'react-router';
 import React       from 'react';
 import CoreLayout  from '../layouts/CoreLayout';
-import HomeView    from '../views/HomeView';
-import TestView    from '../views/TestView';
+import HomeView    from '../components/HomeView';
+import TestView    from '../components/TestView';
 
 export default (onEnter) => {
   return (

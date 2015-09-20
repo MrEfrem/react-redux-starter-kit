@@ -65,15 +65,6 @@ export default function(publicPath, mode) {
           test: /\.(js|jsx)$/,
           include: paths.project(config.get('dir_src')),
           loaders: ['babel?optional[]=runtime']
-        },
-        {
-          test: /\.scss$/,
-          loaders: [
-            'style-loader',
-            'css-loader',
-            'autoprefixer?browsers=last 2 version',
-            'sass-loader?includePaths[]=' + paths.src('styles')
-          ]
         }
       ]
     },

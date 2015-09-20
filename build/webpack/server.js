@@ -42,13 +42,6 @@ const webpackConfig = {
         test    : /\.(js|jsx)$/,
         include :  paths.project(config.get('dir_src')),
         loaders : ['babel?optional[]=runtime&stage=0']
-      },
-      {
-        test    : /\.scss$/,
-        loaders : [
-          'css/locals?module&localIdentName=[name]__[local]___[hash:base64:5]',
-          'sass-loader?includePaths[]=' + paths.src('styles')
-        ]
       }
     ]
   },
@@ -57,22 +50,5 @@ const webpackConfig = {
     failOnError : globals.__PROD__
   }
 };
-
-// ----------------------------------
-// Environment-Specific Defaults
-// ----------------------------------
-if (globals.__PROD__) {
-  webpackConfig.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      output : {
-        'comments'  : false
-      },
-      compress : {
-        'unused'    : true,
-        'dead_code' : true
-      }
-    })
-  );
-}
 
 export default webpackConfig;
