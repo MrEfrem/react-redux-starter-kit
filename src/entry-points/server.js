@@ -1,4 +1,4 @@
-import createRoutes    from '..routes';
+import createRoutes    from '../routes';
 import { match }       from 'react-router';
 import createLocation  from 'history/lib/createLocation';
 
