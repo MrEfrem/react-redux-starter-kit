@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import config  from '../../config';
+import fs      from 'fs';
 
 const paths   = config.get('utils_paths'),
       globals = config.get('globals');
@@ -12,6 +13,7 @@ const webpackConfig = {
       paths.src('entry-points/server')
     ]
   },
+  externals: fs.readdirSync('node_modules').filter(function(x) { return x !== '.bin' }),
   output : {
     filename : 'index.js',
     path     : paths.dist('server'),
