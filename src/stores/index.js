@@ -2,23 +2,30 @@ import { compose, createStore, applyMiddleware } from 'redux';
 import { devTools } from 'redux-devtools';
 import rootReducer from '../reducers';
 import thunkMiddleware from 'redux-thunk';
-import loggerMiddleware from 'redux-logger';
+import createLogger from 'redux-logger';
 
 let createStoreWithMiddleware;
 if (__DEV__) {
+  let middlewares;
+  if (__CLIENT__) {
+    const loggerMiddleware = createLogger();
+    middlewares = applyMiddleware(
+      thunkMiddleware,
+      loggerMiddleware
+    );
+  } else {
+    middlewares = applyMiddleware(
+      thunkMiddleware
+    );
+  }
+
   if (__DEBUG__) {
     createStoreWithMiddleware = compose(
-      applyMiddleware(
-        thunkMiddleware,
-        loggerMiddleware
-      ),
+      middlewares,
       devTools()
     )(createStore);
   } else {
-    createStoreWithMiddleware = applyMiddleware(
-      thunkMiddleware,
-      loggerMiddleware
-    )(createStore);
+    createStoreWithMiddleware = middlewares(createStore);
   }
 }
 if (__PROD__) {
