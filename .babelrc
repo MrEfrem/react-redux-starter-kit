@@ -1,28 +1,6 @@
 {
   "stage": 0,
-  "env": {
-    // only enable it when process.env.NODE_ENV is 'development' or undefined
-    "development": {
-      "plugins": [
-        "react-transform",
-        "typecheck"
-      ],
-      "extra": {
-        "react-transform": [{
-          "target": "react-transform-hmr",
-          "imports": ["react"],
-          "locals": ["module"]
-        },
-        {
-          "target" : "react-transform-catch-errors",
-          "imports" : ["react", "redbox-react"]
-        }]
-      }
-    },
-    "production": {
-      "plugins" : [
-        "typecheck"
-      ]
-    }
-  }
+  "plugins": [
+    "typecheck"
+  ]
 }

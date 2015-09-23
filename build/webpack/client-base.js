@@ -64,7 +64,37 @@ export default function(publicPath, mode) {
         {
           test: /\.(js|jsx)$/,
           include: paths.project(config.get('dir_src')),
-          loaders: ['babel?optional[]=runtime']
+          loader: 'babel',
+          query: {
+            optional: ['runtime'],
+            stage: 2,
+            env: {
+              development: {
+                plugins: [
+                  'react-transform',
+                  "typecheck"
+                ],
+                extra: {
+                  'react-transform': [
+                    {
+                      target:  'react-transform-hmr',
+                      imports: ['react'],
+                      locals:  ['module']
+                    },
+                    {
+                      "target" : "react-transform-catch-errors",
+                      "imports" : ["react", "redbox-react"]
+                    }
+                  ]
+                }
+              },
+              "production": {
+                "plugins" : [
+                  "typecheck"
+                ]
+              }
+            }
+          }
         }
       ]
     },
@@ -105,19 +135,6 @@ export default function(publicPath, mode) {
   }
 
   if (globals.__PROD__) {
-
-    // Compile CSS to its own file in production.
-    webpackConfig.module.loaders = webpackConfig.module.loaders.map(loader => {
-      if (/css/.test(loader.test)) {
-        const [first, ...rest] = loader.loaders;
-
-        loader.loader = ExtractTextPlugin.extract(first, rest.join('!'));
-        delete loader.loaders;
-      }
-
-      return loader;
-    });
-
     webpackConfig.plugins.push(
         new webpack.optimize.UglifyJsPlugin({
           compress: {
