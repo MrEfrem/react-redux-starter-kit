@@ -129,8 +129,7 @@ export default function(publicPath, mode) {
     );
 
     webpackConfig.plugins.push(
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        new webpack.HotModuleReplacementPlugin()
     );
   }
 
