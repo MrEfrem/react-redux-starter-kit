@@ -95,7 +95,7 @@ export default function(publicPath, mode) {
   if (globals.__DEV__) {
     webpackConfig.entry.app.push(
         `webpack-dev-server/client?${config.get('webpack_public_path')}`,
-        `webpack/hot/dev-server`
+        `webpack/hot/only-dev-server`
     );
 
     webpackConfig.plugins.push(
