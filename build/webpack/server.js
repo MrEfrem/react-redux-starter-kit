@@ -1,6 +1,6 @@
 import webpack from 'webpack';
-import config  from '../../config';
 import fs      from 'fs';
+import config  from '../../config';
 
 const paths   = config.get('utils_paths'),
       globals = config.get('globals');
@@ -13,7 +13,9 @@ const webpackConfig = {
       paths.src('entry-points/server')
     ]
   },
-  externals: fs.readdirSync('node_modules').filter(function(x) { return x !== '.bin' }),
+  // Don't include npm packages since these can be imported at runtime
+  // from the Koa application.
+  externals : fs.readdirSync('node_modules').filter(x => x !== '.bin'),
   output : {
     filename : 'index.js',
     path     : paths.dist('server'),
@@ -21,8 +23,7 @@ const webpackConfig = {
   },
   plugins : [
     new webpack.DefinePlugin(Object.assign(config.get('globals'), {
-      __SERVER__ : true,
-      __CLIENT__ : false
+      __SERVER__ : true
     })),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin()
@@ -44,6 +45,13 @@ const webpackConfig = {
         test    : /\.(js|jsx)$/,
         include :  paths.project(config.get('dir_src')),
         loaders : ['babel?optional[]=runtime&stage=0']
+      },
+      {
+        test    : /\.scss$/,
+        loaders : [
+          'css/locals?module&localIdentName=[name]__[local]___[hash:base64:5]',
+          'sass-loader?includePaths[]=' + paths.src('styles')
+        ]
       }
     ]
   },
