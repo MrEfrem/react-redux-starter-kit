@@ -1,6 +1,6 @@
-import createRoutes    from '../routes';
-import { match }       from 'react-router';
-import createLocation  from 'history/lib/createLocation';
+import createRoutes from '../routes';
+import { match } from 'react-router';
+import createLocation from 'history/lib/createLocation';
 
 export configureStore from '../stores';
 export { fetchComponentData } from '../utils';

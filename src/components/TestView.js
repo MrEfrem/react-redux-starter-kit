@@ -1,4 +1,4 @@
-import React       from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import * as CounterActions from '../reducers/counter';
 
@@ -20,7 +20,7 @@ export default class TestView extends React.Component {
 
   render () {
     return (
-      <div className='container text-center'>
+      <div className="container text-center">
         <h1>Page Test</h1>
         <h2>Counter: {this.props.counter}</h2>
       </div>
