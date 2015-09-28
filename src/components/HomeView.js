@@ -15,7 +15,7 @@ export class HomeView extends React.Component {
   static propTypes = {
     dispatch : React.PropTypes.func,
     counter  : React.PropTypes.number
-  }
+  };
 
   constructor () {
     super();
@@ -23,7 +23,7 @@ export class HomeView extends React.Component {
 
   static needs = [
     CounterActions.setCounter
-  ]
+  ];
 
   // normally you'd import an action creator, but I don't want to create
   // a file that you're just going to delete anyways!

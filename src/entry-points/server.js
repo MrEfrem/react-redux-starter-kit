@@ -2,9 +2,9 @@ import createRoutes    from '../routes';
 import { match }       from 'react-router';
 import createLocation  from 'history/lib/createLocation';
 
-export Root           from '../containers/Root';
 export configureStore from '../stores';
 export { fetchComponentData } from '../utils';
+export DevToolsView from '../components/DevToolsView';
 
 const routes = createRoutes();
 

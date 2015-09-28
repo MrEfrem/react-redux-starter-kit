@@ -3,7 +3,7 @@ require('babel/register');
 const server = require('../server'),
       config = require('../config');
 
-if (config.get('globals')['__DEV__']) {
+if (config.get('globals').__DEV__) {
   if (!require('piping')({
       hook: true,
       ignore: /(\/\.|~$|\.json)/i

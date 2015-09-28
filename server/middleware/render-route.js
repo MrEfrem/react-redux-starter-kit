@@ -4,9 +4,13 @@ import React     from 'react';
 import ReactDOM  from 'react-dom/server';
 import serialize from 'serialize-javascript';
 import { RoutingContext } from 'react-router';
+import { Provider } from 'react-redux';
+import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
 
 const paths = config.get('utils_paths');
-const { Root, route, configureStore, fetchComponentData } = require(paths.dist('server'));
+const { DevToolsView, route, configureStore, fetchComponentData } = require(paths.dist('server'));
+
+const globals = config.get('globals');
 
 // ------------------------------------
 // Rendering Setup
@@ -15,14 +19,24 @@ const { Root, route, configureStore, fetchComponentData } = require(paths.dist('
 // compiled .html file is so that we don't have to worry about query strings
 // on generated assets, and we maintain a consistent index.html file between
 // client-side development w/ webpack-dev-server and server rendering.
-const template = fs.readFileSync(paths.dist('client/index.html'), 'utf-8')
-  .replace(
-    '<div id="root"></div>',
-    [
-      '<div id="root">${content}</div>',
-      '<script>window.__INITIAL_STATE__ = ${initialState}</script>'
-    ].join('')
-  );
+const getTemplate = (function () {
+  const renderTemplate = () => {
+    return fs.readFileSync(paths.dist('client/index.html'), 'utf-8')
+      .replace(
+      '<div id="root"></div>',
+      [
+        '<div id="root">${content}</div>',
+        '<script>window.__INITIAL_STATE__ = ${initialState}</script>'
+      ].join('')
+    );
+  };
+  if (globals.__DEV__) {
+    return () => renderTemplate();
+  } else {
+    const renderedTemplate = renderTemplate();
+    return () => renderedTemplate;
+  }
+})();
 
 // TODO: should probably use a tagged template
 function renderIntoTemplate (template, content, initialState) {
@@ -41,15 +55,20 @@ export default function *renderRouteMiddleware (next) {
 
   yield fetchComponentData(store.dispatch, props.components, props.params);
 
-  if (config.get('globals').__DEBUG__) {
+  //Reset state for redux-devtools after performing fetchComponentData, because in client side store state initializing
+  //trough preload state from server.
+  if (globals.__DEBUG__) {
     store = configureStore(store.getState());
   }
 
   const markup = ReactDOM.renderToString(
-    <Root store={store}>
-      <RoutingContext {...props} />
-    </Root>
+    <div>
+      <DevToolsView store={store}/>
+      <Provider store={store}>
+        <RoutingContext {...props} />
+      </Provider>
+    </div>
   );
 
-  this.body = renderIntoTemplate(template, markup, store.getState());
+  this.body = renderIntoTemplate(getTemplate(), markup, store.getState());
 }

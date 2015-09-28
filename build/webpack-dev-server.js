@@ -1,7 +1,7 @@
 import webpack          from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import config           from '../config';
-import webpackConfig    from './webpack/client-dev';
+import webpackConfig    from './webpack/client';
 
 const paths = config.get('utils_paths');
 

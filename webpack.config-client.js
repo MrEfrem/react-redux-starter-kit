@@ -1,4 +1,4 @@
 require('babel/register');
 
-module.exports = exports = require('./build/webpack/client-dev');
+module.exports = exports = require('./build/webpack/client');
 

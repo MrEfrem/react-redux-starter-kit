@@ -37,7 +37,7 @@ if (__PROD__) {
 export default function configureStore (initialState) {
   const store = createStoreWithMiddleware(rootReducer, initialState);
 
-  if (__DEV__ && module.hot) {
+  if (__HMR__ && module.hot) {
     module.hot.accept('../reducers', () => {
       const nextRootReducer = require('../reducers/index');
 

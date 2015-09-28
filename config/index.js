@@ -44,13 +44,13 @@ Edit at your own risk
 config.set('env', process.env.NODE_ENV);
 config.set('globals', {
   'process.env'  : {
-    'NODE_ENV' : JSON.stringify(config.get('env'))
+    NODE_ENV : JSON.stringify(config.get('env'))
   },
-  'NODE_ENV'     : config.get('env'),
-  '__DEV__'      : config.get('env') === 'development',
-  '__PROD__'     : config.get('env') === 'production',
-  '__DEBUG__'    : (config.get('env') === 'development' && !argv.no_debug) || !!argv.nw,
-  '__DEBUG_NW__' : !!argv.nw
+  NODE_ENV     : config.get('env'),
+  __DEV__      : config.get('env') === 'development',
+  __PROD__     : config.get('env') === 'production',
+  __DEBUG__    : (config.get('env') === 'development' && !argv.no_debug),
+  __HMR__ : !!argv.hmr
 });
 
 // ------------------------------------

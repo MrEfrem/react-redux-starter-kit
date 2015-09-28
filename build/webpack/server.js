@@ -23,7 +23,8 @@ const webpackConfig = {
   },
   plugins : [
     new webpack.DefinePlugin(Object.assign(config.get('globals'), {
-      __SERVER__ : true
+      __SERVER__ : true,
+      __CLIENT__ : false
     })),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin()
@@ -45,13 +46,6 @@ const webpackConfig = {
         test    : /\.(js|jsx)$/,
         include :  paths.project(config.get('dir_src')),
         loaders : ['babel?optional[]=runtime&stage=0']
-      },
-      {
-        test    : /\.scss$/,
-        loaders : [
-          'css/locals?module&localIdentName=[name]__[local]___[hash:base64:5]',
-          'sass-loader?includePaths[]=' + paths.src('styles')
-        ]
       }
     ]
   },
