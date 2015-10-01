@@ -2,6 +2,7 @@ import webpack from 'webpack';
 import config  from '../../config';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import autoprefixer from 'autoprefixer';
 
 const paths = config.get('utils_paths'),
     globals = config.get('globals');
@@ -47,7 +48,7 @@ const webpackConfig = {
         loader: 'babel',
         query: {
           optional: ['runtime'],
-          stage: 2,
+          stage: 0,
           "plugins" : [
             "typecheck"
           ],
@@ -68,9 +69,14 @@ const webpackConfig = {
             }
           }
         }
+      },
+      {
+        test    : /\.css$/,
+        loader : ExtractTextPlugin.extract(`css-loader?modules&importLoaders=1&localIdentName=${globals.__PROD__?'[hash:base64]':'[name]---[local]---[hash:base64:5]'}!postcss-loader`)
       }
     ]
   },
+  postcss: [ autoprefixer({ browsers: ['last 2 versions'] }) ],
   eslint: {
     configFile: paths.project('.eslintrc'),
     failOnError: globals.__PROD__,
@@ -103,9 +109,9 @@ webpackConfig.plugins.push(new ExtractTextPlugin(globals.__HMR__ ? 'app.css' : '
 if (globals.__HMR__) {
   webpackConfig.output.publicPath = config.get('webpack_public_path');
   webpackConfig.output.filename = 'app.js';
-  webpackConfig.module.loaders.forEach(v => {
-    if (v.loader === 'babel') {
-      v.query.env.development.extra['react-transform'].transforms.push({
+  webpackConfig.module.loaders.forEach(loader => {
+    if (loader.loader === 'babel') {
+      loader.query.env.development.extra['react-transform'].transforms.push({
         "transform" : "react-transform-hmr",
         "imports" : ["react"],
         "locals" : ["module"]
@@ -126,15 +132,28 @@ if (globals.__DEV__) {
 
 if (globals.__PROD__) {
   webpackConfig.plugins.push(
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          'unused': true,
-          'dead_code': true
-        }
-      })
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        'unused': true,
+        'dead_code': true
+      }
+    })
   );
 }
 
+/*if (!globals.__HMR__) {
+  // Compile CSS to its own file.
+  webpackConfig.module.loaders = webpackConfig.module.loaders.map(loader => {
+    if (/css/.test(loader.test)) {
+      const [first, ...rest] = loader.loaders;
+
+      loader.loader = ExtractTextPlugin.extract(first, rest.join('!'));
+      delete loader.loaders;
+    }
+
+    return loader;
+  });
+}*/
 // ------------------------------------
 // Optional Configuration
 // ------------------------------------

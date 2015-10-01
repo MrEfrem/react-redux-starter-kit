@@ -5,7 +5,6 @@ import ReactDOM  from 'react-dom/server';
 import serialize from 'serialize-javascript';
 import { RoutingContext } from 'react-router';
 import { Provider } from 'react-redux';
-import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
 
 const paths = config.get('utils_paths');
 const { DevToolsView, route, configureStore, fetchComponentData } = require(paths.dist('server'));

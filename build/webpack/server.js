@@ -1,6 +1,8 @@
 import webpack from 'webpack';
 import fs      from 'fs';
 import config  from '../../config';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import autoprefixer from 'autoprefixer';
 
 const paths   = config.get('utils_paths'),
       globals = config.get('globals');
@@ -27,7 +29,8 @@ const webpackConfig = {
       __CLIENT__ : false
     })),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin()
+    new webpack.optimize.DedupePlugin(),
+    new ExtractTextPlugin(globals.__HMR__ ? 'app.css' : '[name].[contenthash].css')
   ],
   resolve : {
     extensions : ['', '.js', '.jsx'],
@@ -45,10 +48,22 @@ const webpackConfig = {
       {
         test    : /\.(js|jsx)$/,
         include :  paths.project(config.get('dir_src')),
-        loaders : ['babel?optional[]=runtime&stage=0']
+        loader: 'babel',
+        query: {
+          optional: ['runtime'],
+          stage: 0,
+          "plugins" : [
+            "typecheck"
+          ]
+        }
+      },
+      {
+        test    : /\.css$/,
+        loader : ExtractTextPlugin.extract(`css-loader?modules&importLoaders=1&localIdentName=${globals.__PROD__?'[hash:base64]':'[name]---[local]---[hash:base64:5]'}!postcss-loader`)
       }
     ]
   },
+  postcss: [ autoprefixer({ browsers: ['last 2 versions'] }) ],
   eslint : {
     configFile  : paths.project('.eslintrc'),
     failOnError : globals.__PROD__
