@@ -72,7 +72,10 @@ const webpackConfig = {
       },
       {
         test    : /\.css$/,
-        loader : ExtractTextPlugin.extract(`css-loader?modules&importLoaders=1&localIdentName=${globals.__PROD__?'[hash:base64]':'[name]---[local]---[hash:base64:5]'}!postcss-loader`)
+        loaders : [
+          'style-loader',
+          `css-loader?modules&importLoaders=1&localIdentName=${globals.__PROD__?'[hash:base64]':'[name]---[local]---[hash:base64:5]'}!postcss-loader`
+        ]
       }
     ]
   },
@@ -141,7 +144,7 @@ if (globals.__PROD__) {
   );
 }
 
-/*if (!globals.__HMR__) {
+if (!globals.__HMR__) {
   // Compile CSS to its own file.
   webpackConfig.module.loaders = webpackConfig.module.loaders.map(loader => {
     if (/css/.test(loader.test)) {
@@ -153,7 +156,7 @@ if (globals.__PROD__) {
 
     return loader;
   });
-}*/
+}
 // ------------------------------------
 // Optional Configuration
 // ------------------------------------
